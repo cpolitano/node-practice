@@ -1,7 +1,9 @@
 'use strict';
 
 var gulp = require('gulp'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    uglify = require('gulp-uglify'),
+    sass = require('gulp-sass');
 
 
 // Creates a readable stream of data in memory
@@ -13,6 +15,18 @@ gulp.task('concatScripts', function(){
   .pipe(gulp.dest('dist/assets/js')); // persists file to destination
 });
 
-gulp.task('default', ['concatScripts'], function(){
+gulp.task('minifyScripts', function(){
+  gulp.src('dist/assets/js/app.js')
+  .pipe(uglify())
+  .pipe(gulp.dest('dist/assets/js'));
+});
+
+gulp.task('compileSass', function(){
+  gulp.src('src/assets/sass/app.scss')
+  .pipe(sass())
+  .pipe(gulp.dest('dist/assets/css'));
+});
+
+gulp.task('default', ['concatScripts', 'minifyScripts', 'compileSass'], function(){
   console.log('default task');
 });
