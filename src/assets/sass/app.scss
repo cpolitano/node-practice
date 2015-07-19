@@ -1,5 +1,10 @@
 $linkColor: #222;
+$textColor: #333;
 
 a {
   color: $linkColor;
+}
+
+p {
+  color: $textColor;
 }
