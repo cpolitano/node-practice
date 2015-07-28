@@ -2,6 +2,7 @@
 
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
+    babel = require('gulp-babel'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
     del = require('del');
@@ -14,9 +15,16 @@ gulp.task('concatScripts', function() {
   .pipe(gulp.dest('dist/assets/js')); // persists file to destination
 });
 
-// concatScripts is a dependency of minifyScripts
-// Concat & minify js and save to dist
-gulp.task('minifyScripts', ['concatScripts'], function() {
+// Convert ES6/2015 to browser-compatible JS
+gulp.task('babelScripts', ['concatScripts'], function() {
+  return gulp.src('dist/assets/js/app.js')
+  .pipe(babel())
+  .pipe(gulp.dest('dist/assets/js'));
+});
+
+// babelScripts is a dependency of minifyScripts
+// Concat, babel & minify js and save to dist
+gulp.task('minifyScripts', ['babelScripts'], function() {
   gulp.src('dist/assets/js/app.js')
   .pipe(uglify())
   .pipe(gulp.dest('dist/assets/js'));
