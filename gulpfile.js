@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     babel = require('gulp-babel'),
     uglify = require('gulp-uglify'),
     sass = require('gulp-sass'),
-    del = require('del');
+    del = require('del'),
+    pages = require('gulp-gh-pages');
 
 
 // Creates a readable stream of data in memory
@@ -47,10 +48,15 @@ gulp.task('clean', function() {
   del('dist');
 });
 
+gulp.task('deploy', function() {
+  gulp.src('dist/**/*')
+    .pipe(pages());
+});
+
 // Saves everything to dist
 // Base preserves directory structure
 gulp.task('build', ['minifyScripts', 'compileSass'], function() {
-  // return gulp.src(['html','img/**','fonts/**','etc'], { base: './' }).pipe(gulp.dest('dist'));
+  return gulp.src(['views/**'], { base: './' }).pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', ['watch']);
